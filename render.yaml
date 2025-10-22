@@ -1,0 +1,10 @@
+services:
+  - type: static
+    name: bloodstream-frontend
+    env: static
+    buildCommand: npm ci && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        # Example: https://bloodstream-backend.onrender.com/api
+        value: ""
