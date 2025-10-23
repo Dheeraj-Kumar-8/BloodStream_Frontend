@@ -108,13 +108,20 @@ const RegisterPage = () => {
           </div>
           <div>
             <label className="text-sm font-medium text-slate-300" htmlFor="phoneNumber">
-              Phone number
+              Phone number (India)
             </label>
             <input
               id="phoneNumber"
               className="mt-1 w-full rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm focus:border-primary focus:outline-none"
-              {...register('phoneNumber', { required: true })}
-              placeholder="+1 (555) 123-4567"
+              {...register('phoneNumber', {
+                required: true,
+                pattern: {
+                  // Accepts: 10 digits starting 6-9, optionally with +91 or 0 prefix and optional spaces/dashes
+                  value: /^(?:\+91[- ]?|0)?[6-9]\d{9}$/,
+                  message: 'Enter a valid Indian mobile number',
+                },
+              })}
+              placeholder="+91 98765 43210"
             />
           </div>
           <div>

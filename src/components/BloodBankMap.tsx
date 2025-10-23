@@ -24,7 +24,8 @@ interface BloodBankMapProps {
   radiusKm?: number;
 }
 
-const fallbackCenter: LatLngExpression = [40.7128, -74.006];
+// Default to India (approximate centroid)
+const fallbackCenter: LatLngExpression = [20.5937, 78.9629];
 
 const toLatLng = (coordinates: [number, number]): LatLngExpression => [coordinates[1], coordinates[0]];
 
@@ -55,9 +56,15 @@ const BloodBankMap = ({ banks, center, radiusKm = 50 }: BloodBankMapProps) => {
     return null;
   }
 
+  const defaultZoom = useMemo(() => {
+    // Wider zoom when using country fallback
+    if (!center && markers.length === 0) return 5;
+    return 12;
+  }, [center, markers.length]);
+
   return (
     <div className="relative h-96 w-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/40">
-      <MapContainer center={mapCenter} zoom={12} scrollWheelZoom className="h-full w-full">
+      <MapContainer center={mapCenter} zoom={defaultZoom} scrollWheelZoom className="h-full w-full">
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
